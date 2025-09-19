@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
             logger.info("Deleting user with id: {}", id);
             boolean deleted = userService.deleteUser(id);
@@ -51,9 +51,12 @@ public class UserController {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            logger.warn("Invalid request for delete: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            logger.error("Error deleting user", e);
-            return ResponseEntity.status(500).build();
+            logger.error("Error deleting user with id {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
