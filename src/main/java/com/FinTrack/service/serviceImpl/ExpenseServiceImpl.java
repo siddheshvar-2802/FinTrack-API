@@ -1,7 +1,7 @@
 package com.FinTrack.service.serviceImpl;
 
-import com.FinTrack.model.Expense;
-import com.FinTrack.model.User;
+import com.FinTrack.model.Expenses;
+import com.FinTrack.model.Users;
 import com.FinTrack.repository.ExpenseRepository;
 import com.FinTrack.repository.UserRepository;
 import com.FinTrack.requests.ExpenseRequest;
@@ -31,7 +31,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public List<ExpenseResponse> getAllExpenses() {
         try {
             logger.info("Fetching all expenses");
-            List<Expense> expenses = expenseRepository.findAll();
+            List<Expenses> expenses = expenseRepository.findAll();
             return expenses.stream()
                     .map(this::mapToResponse)
                     .collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     public ExpenseResponse getExpenseById(Long id) {
         try {
             logger.info("Fetching expense by id: {}", id);
-            Optional<Expense> expenseOpt = expenseRepository.findById(id);
+            Optional<Expenses> expenseOpt = expenseRepository.findById(id);
             return expenseOpt.map(this::mapToResponse).orElse(null);
         } catch (Exception e) {
             logger.error("Error fetching expense by id: {}", id, e);
@@ -57,8 +57,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     public String createExpense(ExpenseRequest expenseRequest) {
         try {
             logger.info("Creating expense: {}", expenseRequest);
-            Expense expense = mapToEntity(expenseRequest);
-            expenseRepository.save(expense);
+            Expenses expenses = mapToEntity(expenseRequest);
+            expenseRepository.save(expenses);
             return "Expense created";
         } catch (Exception e) {
             logger.error("Error creating expense cause:{}", e.getMessage());
@@ -70,15 +70,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     public String updateExpense(Long id, ExpenseRequest expenseRequest) {
         try {
             logger.info("Updating expense with id: {}", id);
-            Optional<Expense> expenseOpt = expenseRepository.findById(id);
+            Optional<Expenses> expenseOpt = expenseRepository.findById(id);
             if (expenseOpt.isPresent()) {
-                Expense expense = expenseOpt.get();
-                // Update fields from request
-                expense.setAmount(expenseRequest.getAmount());
-                expense.setDescription(expenseRequest.getDescription());
-                expense.setDate(expenseRequest.getDate());
-                // Add other fields as needed
-                expenseRepository.save(expense);
+                Expenses expenses = expenseOpt.get();
+                expenses.setAmount(expenseRequest.getAmount());
+                expenses.setDescription(expenseRequest.getDescription());
+                expenses.setDate(expenseRequest.getDate());
+                expenseRepository.save(expenses);
                 return "Expense updated";
             } else {
                 return "Expense not found";
@@ -104,30 +102,30 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
     }
 
-    private ExpenseResponse mapToResponse(Expense expense) {
+    private ExpenseResponse mapToResponse(Expenses expenses) {
         ExpenseResponse response = new ExpenseResponse();
-        response.setId(expense.getId());
-        response.setAmount(expense.getAmount());
-        response.setDescription(expense.getDescription());
-        response.setDate(expense.getDate());
-        response.setCategory(expense.getCategory());
-        response.setPaymentMode(expense.getPaymentMode());
-        response.setUserEmail(expense.getUser() != null ? expense.getUser().getEmail() : null);
+        response.setId(expenses.getId());
+        response.setAmount(expenses.getAmount());
+        response.setDescription(expenses.getDescription());
+        response.setDate(expenses.getDate());
+        response.setCategory(expenses.getCategory());
+        response.setPaymentMode(expenses.getPaymentMode());
+        response.setUserEmail(expenses.getUsers() != null ? expenses.getUsers().getEmail() : null);
         return response;
     }
 
-    private Expense mapToEntity(ExpenseRequest request) {
-        Expense expense = new Expense();
-        expense.setAmount(request.getAmount());
-        expense.setDescription(request.getDescription());
-        expense.setDate(request.getDate());
-        expense.setCategory(request.getCategory());
-        expense.setPaymentMode(request.getPaymentMode());
+    private Expenses mapToEntity(ExpenseRequest request) {
+        Expenses expenses = new Expenses();
+        expenses.setAmount(request.getAmount());
+        expenses.setDescription(request.getDescription());
+        expenses.setDate(request.getDate());
+        expenses.setCategory(request.getCategory());
+        expenses.setPaymentMode(request.getPaymentMode());
 
-        User user = userRepository.findById(request.getUserId())
+        Users users = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
-        expense.setUser(user);
+        expenses.setUsers(users);
 
-        return expense;
+        return expenses;
     }
 }
