@@ -1,24 +1,16 @@
 package com.FinTrack.requests;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 
-public class ExpenseRequest {
+public class TransactionRequest {
     private Double amount;
     private String description;
     private String category;
-    private String paymentMode;
-    private LocalDate date;
+    private String transactionType;
+    private String flow;
+    private Date transactionDate;
     private Long userId;
-
-    public ExpenseRequest(Double amount, String description, String category, String paymentMode, LocalDate date, Long userId) {
-        this.amount = amount;
-        this.description = description;
-        this.category = category;
-        this.paymentMode = paymentMode;
-        this.date = date;
-        this.userId = userId;
-    }
 
     public Double getAmount() {
         return amount;
@@ -44,20 +36,28 @@ public class ExpenseRequest {
         this.category = category;
     }
 
-    public String getPaymentMode() {
-        return paymentMode;
+    public String getTransactionType() {
+        return transactionType;
     }
 
-    public void setPaymentMode(String paymentMode) {
-        this.paymentMode = paymentMode;
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public String getFlow() {
+        return flow;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setFlow(String flow) {
+        this.flow = flow;
+    }
+
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
     public Long getUserId() {

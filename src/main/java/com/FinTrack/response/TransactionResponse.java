@@ -2,7 +2,7 @@ package com.FinTrack.response;
 
 import java.time.LocalDate;
 
-public class ExpenseResponse {
+public class TransactionResponse {
     private Long id;
     private Double amount;
     private String description;
