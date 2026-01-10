@@ -1,31 +1,15 @@
-package com.FinTrack.model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+package com.FinTrack.response;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "expenses")
-public class Expenses {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TransactionResponse {
     private Long id;
-
     private Double amount;
     private String description;
     private String category;
     private String paymentMode;
     private LocalDate date;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users users;
+    private String userEmail;
 
     public Long getId() {
         return id;
@@ -75,11 +59,11 @@ public class Expenses {
         this.date = date;
     }
 
-    public Users getUsers() {
-        return users;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUsers(Users users) {
-        this.users = users;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

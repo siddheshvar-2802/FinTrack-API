@@ -1,6 +1,6 @@
 package com.FinTrack.service.serviceImpl;
 
-import com.FinTrack.model.Users;
+import com.FinTrack.model.User;
 import com.FinTrack.repository.UserRepository;
 import com.FinTrack.requests.UserRequest;
 import com.FinTrack.response.UserResponse;
@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalArgumentException("User with this email already exists..️");
             }
 
-            Users users = new Users();
-            users.setName(userRequest.getName());
-            users.setEmail(userRequest.getEmail());
-            users.setPassword(userRequest.getPassword());
-            users.setRole(userRequest.getRole());
+            User user = new User();
+            user.setName(userRequest.getName());
+            user.setEmail(userRequest.getEmail());
+            user.setPassword(userRequest.getPassword());
+            user.setRole(userRequest.getRole());
 
-            userRepository.save(users);
+            userRepository.save(user);
             return "User created successfully";
         } catch (IllegalArgumentException e) {
             logger.error("Validation error: {}", e.getMessage());
@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUserById(Long id) {
         try {
             logger.info("Fetching user by id: {}", id);
-            Users users = userRepository.findById(id)
+            User user = userRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
-            return mapToResponse(users);
+            return mapToResponse(user);
         } catch (IllegalArgumentException e) {
             logger.error("Validation error: {}", e.getMessage());
             throw e;
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResponse> getAllUsers() {
         try {
             logger.info("Fetching all users");
-            List<Users> users = userRepository.findAll();
+            List<User> users = userRepository.findAll();
             return users.stream()
                     .map(this::mapToResponse)
                     .toList();
@@ -98,12 +98,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private UserResponse mapToResponse(Users users) {
+    private UserResponse mapToResponse(User user) {
         UserResponse response = new UserResponse();
-        response.setId(users.getId());
-        response.setUsername(users.getName());
-        response.setEmail(users.getEmail());
-        response.setRole(users.getRole());
+        response.setId(user.getUserId());
+        response.setUsername(user.getName());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole());
         return response;
     }
 }
