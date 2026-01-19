@@ -6,6 +6,8 @@ import com.FinTrack.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,4 +88,10 @@ public class UserController {
             return ResponseEntity.status(500).body("Internal server error");
         }
     }
+
+    /*@Bean
+    public CommandLineRunner commandLineRunner() {
+        return runner -> logger.info("UserController initialized successfully");
+    }*/
+
 }
